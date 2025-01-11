@@ -1,10 +1,7 @@
-# Introduction
-
-# Approach
-
 ### Description
+This is a simple app that bridges USDC from Noble Testnet to Ethereum Sepolia. Here you can learn how to interact with noble chain, using cosmjs, connecting to keplr wallet (browser extension) as well as the CCTP (cross chain transfer protocol).
 
-Through further searching I found:
+According to
 
 - https://developers.circle.com/stablecoins/transfer-usdc-on-testnet-from-noble-to-ethereum
 - https://github.com/circlefin/noble-cctp/tree/master/examples
