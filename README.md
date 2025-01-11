@@ -1,20 +1,91 @@
+# Introduction
+
+Here we find the following tree structure:
+
+```
+❯ tree -L 1 .
+.
+├── README.md
+├── images
+├── my-app
+└── test-bun
+
+4 directories, 1 file
+```
+
+- `my-app` - contains bridge exercise. Most of the code is under `app/page.tsx`
+- `test-bun` - comtains code for exercise 2
+- `README.md` - this readme
+- `images` - contains images used in this readme
+
 # Approach
 
-Having never used used Noble nor Kepler. Naively, my first approach was to code the corrent flow:
+### Naive Approach
+
+Having never used used Noble nor Kepler, naively, my first approach was to code the following flow:
+
 1. Smart contract that stores USDC in Noble
 2. Smart contract that stores USDC in Ethereum Sepolia
-3. Dapp that connects to kepler and sends USDC to smart contract no.1 
+3. Dapp that connects to kepler and sends USDC to smart contract no.1
 4. Job that indexes noble tx of smart contract no. 1 and triggers a transfer smart contract -> recipient address (the mint)
 
-This seemed too long of an approach to be done in couple of hours so I searched for a shorter way like here:
+This seemed too long of an approach to be done in couple of hours...
 
+![naive approach schema](./images/naive_approach_schema.png)
 
-Noble Testnet RPC:
-https://testnet.cosmos.directory/nobletestnet/nodes
-https://rpc.testcosmos.directory/nobletestnet
+### Approach I went for
 
-Noble -> Eth bridging in typescript
-https://github.com/circlefin/noble-cctp/blob/master/examples/depositForBurn.ts
+Through further searching I found:
 
-https://github.com/cosmos/cosmos-sdk/issues/11997
-https://github.com/b9lab/cosmjs-sandbox/pull/2
+- https://developers.circle.com/stablecoins/transfer-usdc-on-testnet-from-noble-to-ethereum
+- https://github.com/circlefin/noble-cctp/tree/master/examples
+
+It is described that there is a CCTP (cross chain transfer protocol) put in place with a relayer doing the automatic burn/mint mechanics of the bridge if instructed properly.
+
+With this in place I would have to code :
+
+1. Dapp that connects to kepler (React UI)
+2. Broadcasting the burn transaction using the signer of kepler wallet
+
+Libraries used: cosmjs, react, kepler, tailwind, etc.
+
+### Screenshots
+
+Here the dapp is connected to the kepler wallet (in the right) and shows its current USDC balance.
+
+![](images/bridge-1.png)
+
+---
+
+Here the bridge transactions needs approal through the kepler extensions
+
+![](images/bridge-2.png)
+
+---
+
+Here is the transaction on mintscan of noble testnet
+https://www.mintscan.io/noble-testnet/tx/7B63B6E45AB0F751C663AE16D64B5E936C02EEF58CDFB606B90D46FEE5EC1F00?sector=json
+
+![](images/mintscan-1.png)
+
+When this transaction is pushed, the response from the RPC node (https://rpc.testcosmos.directory/nobletestnet) is not parsed correctly.
+
+![](images/error-1.png)
+
+According to
+
+- https://github.com/cosmos/cosmos-sdk/issues/11997
+- https://github.com/b9lab/cosmjs-sandbox/pull/2
+
+There might be some issues or unmaintained libraries
+
+---
+
+If we see in sepolia https://sepolia.etherscan.io/address/0x47edfb5eAAf03a9c117e0A498778232D2BCf3BdA
+
+We can't see a mint transaction.
+
+![](images/sepolia-1.png)
+
+I am not sure (yet) to why there isn't a mint transaction as the USDC relayer (CCTP) should have done this, unless there isn't one deplpoyed and I need to deploy it myself (this wasn't stated in the tutorial).
+_This is a place for improvement._
