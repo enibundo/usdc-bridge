@@ -60,6 +60,7 @@ export default function Home() {
       const mintRecipient = "0".repeat(zeroesNeeded) + cleanedMintRecipient;
       const buffer = Buffer.from(mintRecipient, "hex");
       const mintRecipientBytes = new Uint8Array(buffer);
+      const uusdcAmount = (Number(values.amount) * 10) ^ 6;
 
       console.log("mintRecipient: ", mintRecipient);
       console.log("mintRecipientBytes: ", mintRecipientBytes);
@@ -68,7 +69,7 @@ export default function Home() {
         typeUrl: "/circle.cctp.v1.MsgDepositForBurn",
         value: {
           from: account.address,
-          amount: "1",
+          amount: uusdcAmount.toString(),
           destinationDomain: 0,
           mintRecipient: mintRecipientBytes,
           burnToken: "uusdc",
