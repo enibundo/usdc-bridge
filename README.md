@@ -1,39 +1,8 @@
 # Introduction
 
-Here we find the following tree structure:
-
-```
-❯ tree -L 1 .
-.
-├── README.md
-├── images
-├── my-app
-└── test-bun
-
-4 directories, 1 file
-```
-
-- `my-app` - contains bridge exercise. Most of the code is under `app/page.tsx`
-- `test-bun` - comtains code for exercise 2
-- `README.md` - this readme
-- `images` - contains images used in this readme
-
 # Approach
 
-### Naive Approach
-
-Having never used used Noble nor Kepler, naively, my first approach was to code the following flow:
-
-1. Smart contract that stores USDC in Noble
-2. Smart contract that stores USDC in Ethereum Sepolia
-3. Dapp that connects to kepler and sends USDC to smart contract no.1
-4. Job that indexes noble tx of smart contract no. 1 and triggers a transfer smart contract -> recipient address (the mint)
-
-This seemed too long of an approach to be done in couple of hours...
-
-![naive approach schema](./images/naive_approach_schema.png)
-
-### Approach I went for
+### Description
 
 Through further searching I found:
 
