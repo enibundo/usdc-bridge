@@ -8,7 +8,7 @@ According to
 
 It is described that there is a CCTP (cross chain transfer protocol) put in place with a relayer doing the automatic burn/mint mechanics of the bridge if instructed properly.
 
-With this in place I would have to code :
+With this in place we'd have to code :
 
 1. Dapp that connects to kepler (React UI)
 2. Broadcasting the burn transaction using the signer of kepler wallet
