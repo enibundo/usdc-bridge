@@ -1,3 +1,8 @@
+import {
+  CIRCLE_CCTP_DEPOSIT_FOR_BURN,
+  USDC_DENOM,
+  USDC_MULTIPLIER,
+} from "@/global/constants";
 import { SigningStargateClient } from "@cosmjs/stargate";
 import { useMutation } from "@tanstack/react-query";
 
@@ -23,23 +28,23 @@ export const useUsdcBridge = ({
       const mintRecipient = "0".repeat(zeroesNeeded) + cleanedMintRecipient;
       const buffer = Buffer.from(mintRecipient, "hex");
       const mintRecipientBytes = new Uint8Array(buffer);
-      const uusdcAmount = (Number(amount) * 10) ^ 6;
+      const uusdcAmount = Number(amount) * USDC_MULTIPLIER;
 
       const msg = {
-        typeUrl: "/circle.cctp.v1.MsgDepositForBurn",
+        typeUrl: CIRCLE_CCTP_DEPOSIT_FOR_BURN,
         value: {
           from: address,
           amount: uusdcAmount.toString(),
           destinationDomain: 0,
           mintRecipient: mintRecipientBytes,
-          burnToken: "uusdc",
+          burnToken: USDC_DENOM,
         },
       };
 
       const fee = {
         amount: [
           {
-            denom: "uusdc",
+            denom: USDC_DENOM,
             amount: "0",
           },
         ],

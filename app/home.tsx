@@ -113,11 +113,16 @@ export default function Home() {
         );
       }
     };
+
     updateCurrentWalletState();
   }, [keplrWindow]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      amount: 0,
+      recipientAddress: ZERO_ADDRESS,
+    },
   });
 
   return (
