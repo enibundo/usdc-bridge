@@ -23,13 +23,21 @@ import { Terminal, Loader } from "lucide-react";
 import { Registry, GeneratedType } from "@cosmjs/proto-signing";
 import { MsgDepositForBurn } from "@/generated/tx";
 import { useUsdcBridge } from "@/hooks/useUsdcBridge";
+import {
+  CIRCLE_CCTP_DEPOSIT_FOR_BURN,
+  NOBLE_TESTNET_CHAIN_ID,
+  NOBLE_TESTNET_RPC,
+  USDC_DENOM,
+  USDC_MULTIPLIER,
+  ZERO_ADDRESS,
+} from "@/global/constants";
 
 declare global {
   interface Window extends KeplrWindow {}
 }
 
 const cctpTypes: ReadonlyArray<[string, GeneratedType]> = [
-  ["/circle.cctp.v1.MsgDepositForBurn", MsgDepositForBurn],
+  [CIRCLE_CCTP_DEPOSIT_FOR_BURN, MsgDepositForBurn],
 ];
 
 function createDefaultRegistry(): Registry {
@@ -76,15 +84,13 @@ export default function Home() {
   useEffect(() => {
     const updateCurrentWalletState = async () => {
       if (keplrWindow !== undefined) {
-        const chainId = "grand-1";
-        const grandRpcUrl = "https://rpc.testcosmos.directory/nobletestnet";
-
-        await keplrWindow.keplr?.enable(chainId);
-
-        const offlineSigner = keplrWindow.getOfflineSigner?.(chainId);
+        await keplrWindow.keplr?.enable(NOBLE_TESTNET_CHAIN_ID);
+        const offlineSigner = keplrWindow.getOfflineSigner?.(
+          NOBLE_TESTNET_CHAIN_ID
+        );
 
         const signingClient = await SigningStargateClient.connectWithSigner(
-          grandRpcUrl,
+          NOBLE_TESTNET_RPC,
           offlineSigner!,
           {
             registry: createDefaultRegistry() as any,
@@ -96,14 +102,14 @@ export default function Home() {
 
         const uusdcBalance = await signingClient.getBalance(
           account.address,
-          "uusdc"
+          USDC_DENOM
         );
 
         setSigningClient(signingClient);
         setAccount(account);
         setNobleWalletAddress(account.address);
         setNobleUsdcBalance(
-          (Number(uusdcBalance.amount) / 1_000_000).toString()
+          (Number(uusdcBalance.amount) / USDC_MULTIPLIER).toString()
         );
       }
     };
@@ -114,7 +120,7 @@ export default function Home() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       amount: 0,
-      recipientAddress: "0x0000000000000000000000000000000000000000",
+      recipientAddress: ZERO_ADDRESS,
     },
   });
 
@@ -122,7 +128,6 @@ export default function Home() {
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start border border-teal-50 p-10">
         <Alert>
-          {" "}
           {account == undefined ? (
             <center>
               <Loader />
@@ -136,7 +141,7 @@ export default function Home() {
                 <br />- {nobleUsdcBalance} USDC
               </AlertDescription>
             </>
-          )}{" "}
+          )}
         </Alert>
 
         <Separator />
@@ -165,10 +170,7 @@ export default function Home() {
                 <FormItem>
                   <FormLabel>Recipient Address</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="0x0000000000000000000000000000000000000000"
-                      {...field}
-                    />
+                    <Input placeholder={ZERO_ADDRESS} {...field} />
                   </FormControl>
                   <FormDescription>
                     Recipient address in Ethereum Sepolia (Testnet)
