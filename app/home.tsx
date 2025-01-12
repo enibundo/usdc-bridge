@@ -118,10 +118,6 @@ export default function Home() {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      amount: 0,
-      recipientAddress: ZERO_ADDRESS,
-    },
   });
 
   return (
@@ -137,8 +133,9 @@ export default function Home() {
               <Terminal className="h-4 w-4" />
               <AlertTitle>Source Wallet</AlertTitle>
               <AlertDescription>
-                - {nobleWalletAddress}
-                <br />- {nobleUsdcBalance} USDC
+                <b>Address</b>: {nobleWalletAddress}
+                <br />
+                <b>Balance</b>: {nobleUsdcBalance} USDC
               </AlertDescription>
             </>
           )}
