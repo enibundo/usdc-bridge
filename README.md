@@ -1,5 +1,6 @@
 ```
-/!\ The updated version of this repo is found here: https://github.com/enibundo/usd-bridge-2
+/!\ The updated version of this repo is found here:
+https://github.com/enibundo/usd-bridge-2
 ```
 ### Description
 This is a simple app that bridges USDC from Noble Testnet to Ethereum Sepolia. Here you can learn how to interact with noble chain, using cosmjs, connecting to keplr wallet (browser extension) as well as the CCTP (cross chain transfer protocol).
